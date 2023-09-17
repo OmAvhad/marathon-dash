@@ -35,7 +35,7 @@ const AddCampaign = () => {
   const [ loader2, setLoader2 ] = useState(false);
   const [ loader3, setLoader3 ] = useState(false);
 
-  const [ finalText, setFinalText ] = useState("Create")
+  const [ finalText, setFinalText ] = useState(false)
 
   function generatePoster() {
     setLoader1(true)
@@ -143,7 +143,15 @@ const AddCampaign = () => {
                 }
                 Volunteer Notification
               <br />
-              <CButton onClick={generatePoster}>{finalText}</CButton>
+              { finalText ?
+                <a href="/view">
+                  <CButton onClick={generatePoster}>Next</CButton>
+                </a>
+                :
+                <a href="/#/view">
+                  <CButton onClick={generatePoster}>Create</CButton>
+                </a>
+              }
               </div>
             </CForm>
           </CCardBody>

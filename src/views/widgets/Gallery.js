@@ -18,13 +18,13 @@ import {
   } from '@coreui/react'
 import ReactImg from '../../assets/images/download.png'
 
-function CampaignCard() {
+function CampaignGallery() {
     const [ data, setData ] = useState(null)
     useEffect(() => {
-        axios.get(`https://edumate.glitch.me/pastMarathon/`)
+        axios.get(`https://edumate.glitch.me/all-images/`)
           .then((res) => {
-            console.log(res.data.data)
-            setData(res.data.data)
+            console.log(res.data)
+            setData(res.data)
           })
           .catch(error => {
             console.error('Error fetching data:', error);
@@ -32,18 +32,11 @@ function CampaignCard() {
     }, []);
 
     return (
-        <div className='d-flex gap-5'>
+        <div className='d-flex gap-2'>
             {data &&
                 data.map((item) => (
                     <CCard style={{ width: '18rem' }}>
-                        <CCardImage orientation="top" src={item.img} />
-                        <CCardBody>
-                            <CCardTitle>{item.eventName}</CCardTitle>
-                            <CCardText className='overflow-hidden' style={{ height: '5rem'}}>
-                            {item.prMessage}
-                            </CCardText>
-                            <CButton href="#">Go somewhere</CButton>
-                        </CCardBody>
+                        <CCardImage orientation="top" src={item} />
                     </CCard>
                 ))
             }
@@ -51,4 +44,4 @@ function CampaignCard() {
     )
 }
 
-export default CampaignCard
+export default CampaignGallery

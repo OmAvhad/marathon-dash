@@ -58,11 +58,65 @@ import axios from 'axios'
 
 const Dashboard = () => {
   const [ data, setData ] = useState(null)
+  const [ sponsors, setSponsors ] = useState(null)
+  const [ genderData, setGenderData ] = useState({
+    male: 0,
+    female: 0,
+    total: 0
+  })
+  const [ pastMarathon, setPastMarathon ] = useState(null)
+  const [ upMarathon, setUpMarathon ] = useState(null)
+  const [ locationData, setLocationData ] = useState(null)
     useEffect(() => {
+        axios.get(`https://edumate.glitch.me/pastMarathon/`)
+          .then((res) => {
+            console.log(res.data.data)
+            setPastMarathon(res.data.data)
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+        axios.get(`https://edumate.glitch.me/getmarathon/`)
+          .then((res) => {
+            console.log(res.data.data)
+            setUpMarathon(res.data.data)
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+        });
         axios.get(`https://edumate.glitch.me/getanalyticsmarathon`)
           .then((res) => {
             console.log(res.data)
             setData(res.data)
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+        axios.get(`https://edumate.glitch.me/getSponsors`)
+          .then((res) => {
+            console.log(res.data.data)
+            setSponsors(res.data.data)
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+        axios.get(`https://edumate.glitch.me/getUsers`)
+          .then((res) => {
+            console.log(res.data)
+            setGenderData(prevObject => ({
+              ...prevObject,  // Spread the previous state
+              male: res.data.male,
+              female: res.data.female,
+              total: res.data.total // Update the specific property
+            }));
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+        axios.get(`https://edumate.glitch.me/getlocation`)
+          .then((res) => {
+            console.log(res.data)
+            setLocationData(res.data)
           })
           .catch(error => {
             console.error('Error fetching data:', error);
@@ -72,11 +126,11 @@ const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
   const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
+    { title: 'Chennai', value: '29.703 Users', percent: 40, color: 'success' },
+    { title: 'Delhi', value: '24.093 Users', percent: 20, color: 'info' },
+    { title: 'Mumbai', value: '78.706 Views', percent: 60, color: 'warning' },
+    { title: 'Kolkata', value: '22.123 Users', percent: 80, color: 'danger' },
+    { title: 'Pune', value: 'Average Rate', percent: 40.15, color: 'primary' },
   ]
 
   const progressGroupExample1 = [
@@ -90,15 +144,15 @@ const Dashboard = () => {
   ]
 
   const progressGroupExample2 = [
-    { title: 'Male', icon: cilUser, value: 53 },
-    { title: 'Female', icon: cilUserFemale, value: 43 },
+    { title: 'Male', icon: cilUser, value: genderData.male },
+    { title: 'Female', icon: cilUserFemale, value: genderData.female },
   ]
 
   const progressGroupExample3 = [
-    { title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235' },
-    { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223' },
-    { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
-    { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
+    { title: 'Organic Search', icon: cibGoogle, percent: 12, value: '191' },
+    { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51' },
+    { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37' },
+    { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27' },
   ]
 
   const tableExample = [
@@ -191,16 +245,16 @@ const Dashboard = () => {
       activity: 'Last week',
     },
   ]
-
   return (
-    <>
-      <WidgetsDropdown />
+    <>  { genderData !== null && pastMarathon !== null && upMarathon !== null &&
+        <WidgetsDropdown users={genderData.total} past={pastMarathon.length} upcoming={upMarathon.length} income={22}/>
+    }
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
             <CCol sm={5}>
               <h4 id="traffic" className="card-title mb-0">
-                Traffic
+                Registrations
               </h4>
               <div className="small text-medium-emphasis">January - July 2021</div>
             </CCol>
@@ -214,7 +268,7 @@ const Dashboard = () => {
                     color="outline-secondary"
                     key={value}
                     className="mx-0"
-                    active={value === 'Month'}
+                    active={value === 'Day'}
                   >
                     {value}
                   </CButton>
@@ -225,7 +279,7 @@ const Dashboard = () => {
           <CChartLine
             style={{ height: '300px', marginTop: '40px' }}
             data={{
-              labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+              labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
               datasets: [
                 {
                   label: 'My First dataset',
@@ -234,13 +288,13 @@ const Dashboard = () => {
                   pointHoverBackgroundColor: getStyle('--cui-info'),
                   borderWidth: 2,
                   data: [
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
                   ],
                   fill: true,
                 },
@@ -251,13 +305,13 @@ const Dashboard = () => {
                   pointHoverBackgroundColor: getStyle('--cui-success'),
                   borderWidth: 2,
                   data: [
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
+                    random(10, 50),
                   ],
                 },
                 {
@@ -308,17 +362,49 @@ const Dashboard = () => {
           />
         </CCardBody>
         <CCardFooter>
-          <CRow xs={{ cols: 1 }} md={{ cols: 5 }} className="text-center">
-            {progressExample.map((item, index) => (
-              <CCol className="mb-sm-2 mb-0" key={index}>
-                <div className="text-medium-emphasis">{item.title}</div>
-                <strong>
-                  {item.value} ({item.percent}%)
-                </strong>
-                <CProgress thin className="mt-2" color={item.color} value={item.percent} />
-              </CCol>
-            ))}
-          </CRow>
+          {
+            locationData ?
+            <CRow xs={{ cols: 1 }} md={{ cols: 5 }} className="text-center">
+                <CCol className="mb-sm-2 mb-0">
+                  <div className="text-medium-emphasis">Mumbai</div>
+                  <strong>
+                    ({locationData.Mumbai})
+                  </strong>
+                  <CProgress thin className="mt-2" color="success" value={locationData.Mumbai} />
+                </CCol>
+                <CCol className="mb-sm-2 mb-0">
+                  <div className="text-medium-emphasis">Delhi</div>
+                  <strong>
+                    ({locationData.Delhi})
+                  </strong>
+                  <CProgress thin className="mt-2" color="success" value={locationData.Delhi} />
+                </CCol>
+                <CCol className="mb-sm-2 mb-0">
+                  <div className="text-medium-emphasis">Chennai</div>
+                  <strong>
+                    ({locationData.Chennai})
+                  </strong>
+                  <CProgress thin className="mt-2" color="success" value={locationData.Kolkata} />
+                </CCol>
+                <CCol className="mb-sm-2 mb-0">
+                  <div className="text-medium-emphasis">Kolkata</div>
+                  <strong>
+                    ({locationData.Kolkata})
+                  </strong>
+                  <CProgress thin className="mt-2" color="success" value={locationData.Chennai} />
+                </CCol>
+                <CCol className="mb-sm-2 mb-0">
+                  <div className="text-medium-emphasis">Pune</div>
+                  <strong>
+                    ({locationData.Pune})
+                  </strong>
+                  <CProgress thin className="mt-2" color="success" value={locationData.Pune} />
+                </CCol>
+            </CRow>
+            :
+            <div>
+            </div>
+          }
         </CCardFooter>
       </CCard>
 
@@ -334,14 +420,14 @@ const Dashboard = () => {
                   <CRow>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-info py-1 px-3">
-                        <div className="text-medium-emphasis small">New Clients</div>
-                        <div className="fs-5 fw-semibold">9,123</div>
+                        <div className="text-medium-emphasis small">New User</div>
+                        <div className="fs-5 fw-semibold">7</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">Recurring Clients</div>
-                        <div className="fs-5 fw-semibold">22,643</div>
+                        <div className="text-medium-emphasis small">Recurring Users</div>
+                        <div className="fs-5 fw-semibold">12</div>
                       </div>
                     </CCol>
                   </CRow>
@@ -362,16 +448,10 @@ const Dashboard = () => {
 
                 <CCol xs={12} md={6} xl={6}>
                   <CRow>
-                    <CCol sm={6}>
+                    <CCol sm={12}>
                       <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">Pageviews</div>
-                        <div className="fs-5 fw-semibold">78,623</div>
-                      </div>
-                    </CCol>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">Organic</div>
-                        <div className="fs-5 fw-semibold">49,123</div>
+                        <div className="fs-5 fw-semibold">80</div>
                       </div>
                     </CCol>
                   </CRow>
@@ -412,53 +492,37 @@ const Dashboard = () => {
               </CRow>
 
               <br />
-
+              Sponsor
               <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead color="light">
                   <CTableRow>
                     <CTableHeaderCell className="text-center">
                       <CIcon icon={cilPeople} />
                     </CTableHeaderCell>
-                    <CTableHeaderCell>User</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Country</CTableHeaderCell>
-                    <CTableHeaderCell>Usage</CTableHeaderCell>
+                    <CTableHeaderCell>Sponsor</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Payment Method</CTableHeaderCell>
                     <CTableHeaderCell>Activity</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
+                  {sponsors && sponsors.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
+                        <CAvatar size="md" src={cilUser} status={item.name} />
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div>{item.user.name}</div>
+                        <div>{item.name}</div>
                         <div className="small text-medium-emphasis">
-                          <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                          {item.user.registered}
+                          <span>{item.email}</span> | Registered:{' '}
+                          {item.name}
                         </div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>{item.usage.value}%</strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">{item.usage.period}</small>
-                          </div>
-                        </div>
-                        <CProgress thin color={item.usage.color} value={item.usage.value} />
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
+                        <CIcon size="xl" icon={cibCcMastercard} />
                       </CTableDataCell>
                       <CTableDataCell>
                         <div className="small text-medium-emphasis">Last login</div>
-                        <strong>{item.activity}</strong>
+                        <strong>{item.name}</strong>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

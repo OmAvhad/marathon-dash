@@ -51,12 +51,14 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const CampaignCard = React.lazy(() => import('./views/widgets/CampaignCard'))
+const CampaignGallery = React.lazy(() => import('./views/widgets/Gallery'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/forms/add-campaign', name: 'AddCampaign', element: AddCampaign },
   { path: '/view', name: 'ViewCampaign', element: CampaignCard },
+  { path: '/gallery', name: 'Gallery', element: CampaignGallery },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

@@ -14,6 +14,7 @@ import {
   cilStar,
   cilPlus,
   cilLineWeight,
+  cilLibraryAdd,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -45,21 +46,27 @@ const _nav = [
     icon: <CIcon icon={cilLineWeight} customClassName="nav-icon" />,
   },
   {
-    component: CNavTitle,
-    name: 'Theme',
-  },
-  {
     component: CNavItem,
-    name: 'Colors',
-    to: '/theme/colors',
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+    name: 'Gallery',
+    to: '/gallery',
+    icon: <CIcon icon={cilLibraryAdd} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Typography',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavTitle,
+  //   name: 'Theme',
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'Colors',
+  //   to: '/theme/colors',
+  //   icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: 'Typography',
+  //   to: '/theme/typography',
+  //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  // },
   // {
   //   component: CNavTitle,
   //   name: 'Components',

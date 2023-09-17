@@ -13,7 +13,8 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 
-const WidgetsDropdown = () => {
+const WidgetsDropdown = ({past, upcoming, users, income}) => {
+  console.log(users,past,upcoming,income)
   return (
     <CRow>
       <CCol sm={6} lg={3}>
@@ -22,7 +23,7 @@ const WidgetsDropdown = () => {
           color="primary"
           value={
             <>
-              26K{' '}
+              {users}{' '}
               <span className="fs-6 fw-normal">
                 (-12.4% <CIcon icon={cilArrowBottom} />)
               </span>
@@ -109,7 +110,7 @@ const WidgetsDropdown = () => {
           color="info"
           value={
             <>
-              $6.200{' '}
+              {income}{' '}
               <span className="fs-6 fw-normal">
                 (40.9% <CIcon icon={cilArrowTop} />)
               </span>
@@ -195,13 +196,13 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-              2.49{' '}
+              {upcoming}{' '}
               <span className="fs-6 fw-normal">
                 (84.7% <CIcon icon={cilArrowTop} />)
               </span>
             </>
           }
-          title="Conversion Rate"
+          title="Upcoming Marathon"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -268,13 +269,13 @@ const WidgetsDropdown = () => {
           color="danger"
           value={
             <>
-              44K{' '}
+              {past}{' '}
               <span className="fs-6 fw-normal">
                 (-23.6% <CIcon icon={cilArrowBottom} />)
               </span>
             </>
           }
-          title="Sessions"
+          title="Past Marathons"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
