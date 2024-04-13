@@ -12,15 +12,15 @@ const Notification=require("./notification");
 const Petition=require("./petition");
 
 const usera=require("./user");
-mongoose.connect("mongodb+srv://surajchavan19:SachinJugalSuraj@cluster0.wo3ec.mongodb.net/event")
-const facebook = new Facebook({ appId: '606827581626140', secret: '127afb87caf23e167ff7ee92e4789cdc' });
+mongoose.connect("")
+const facebook = new Facebook({ appId: '', secret: '' });
 var FB = require('fb');
 const { parse, format } = require('date-fns');
 let id="";
 // const { LocalAuth ,MessageMedia, Buttons } = require('whatsapp-web.js');
 let count=60
 const openai = new OpenAI ({
-    apiKey:"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"
+    apiKey:""
 });
 
 const qrcode = require('qrcode-terminal');
@@ -40,7 +40,7 @@ const { MessageMedia } = require('whatsapp-web.js');
 
 let msg=[];
 client.on('message', async message => {
-//   if(message.author=="917738872498@c.us" || message.author=="919136263315@c.us" || message.author=="919920585204@c.us" || message.author=="917700084212@c.us"){
+
 	msg.push(message.body);
     console.log(message.body);
    
@@ -182,20 +182,12 @@ client.initialize();
 //     }
     
 
-    FB.setAccessToken('EAAOthZBxeSBwBO2nNXAgIoo2ivqzaZCbGXHISQGY3RkFuPTZCtDr6L1tgKFbAkmggtRaCZAGf37x73a8ZCLcW863UcHZCBFRzIZA4u8GrnTVaoRwF1EFmyZBYcsKoLR1gH8ZCz0lv4oKKHbJcpxjZAklHVRwYJLMbfIbpl7PZCkUZAr3DsQ4ZC7EpHOl1Qk5UmWk7mE0bBV4k8qelR2UzoI7MGxIzkQXLqf8ZCt3ek');
+    FB.setAccessToken('');
 
 const uploadtoFb=async(url, Description)=>{
     console.log("ppp",url);
-//    const data=await FB.api(
-//         '/148283878349743/photos',
-//         'POST',
-//         {"url":`http://res.cloudinary.com/dfy3abzt0/raw/upload/v1694862546/xphpg4pbixzt0beeaaut.jpg`,"message":`jkkjij`},
-//         function(response) {
-//             console.log(response);
-//         }
-//       );
-//       return data;
-FB.api(`/157826944070092/photos`, 'POST', 
+
+FB.api(`/{id}/photos`, 'POST', 
 {
     // 'source': fs.createReadStream("PATH_TO_THE_LOCAL_FILE"),
           "url":`${url}`,
@@ -220,14 +212,6 @@ function (response) {
 }
 
 
-//     //   FB.api('148283878349743/photos', 'post', { source:'http://res.cloudinary.com/dfy3abzt0/raw/upload/v1694862546/xphpg4pbixzt0beeaaut.jpg', caption: 'My vacation' }, function (res) {
-//     //     if(!res || res.error) {
-//     //       console.log(!res ? 'error occurred' : res.error);
-//     //       return;
-//     //     }
-//     //     console.log('Post Id: ' + res.post_id);
-//     //   });
-// }
 
 // const sendalertoSponsor=async(url,data)=>{
 //     const response=await sponsor.find();
